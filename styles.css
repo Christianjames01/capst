@@ -291,88 +291,7 @@
      position: relative;
  }
 
- .seal-card-top {
-     display: flex;
-     justify-content: space-between;
-     align-items: flex-start;
-     margin-bottom: 18px;
- }
-
- .seal-card-top .label {
-     font-family: var(--font-mono);
-     font-size: 11px;
-     letter-spacing: .08em;
-     text-transform: uppercase;
-     color: var(--ink-soft);
- }
-
- .seal-badge {
-     width: 56px;
-     height: 56px;
-     object-fit: contain;
- }
-
- .seal-name {
-     font-family: var(--font-display);
-     font-size: 22px;
-     font-weight: 600;
-     margin: 0 0 2px;
-     color: var(--hcdc-navy);
- }
-
- .seal-sub {
-     font-size: 13px;
-     color: var(--ink-soft);
-     margin: 0 0 20px;
- }
-
- .seal-row {
-     display: flex;
-     justify-content: space-between;
-     font-size: 12.5px;
-     padding: 9px 0;
-     border-top: 1px dashed var(--line);
- }
-
- .seal-row span:first-child {
-     color: var(--ink-soft);
- }
-
- .seal-row span:last-child {
-     font-family: var(--font-mono);
-     color: var(--hcdc-navy);
-     text-align: right;
- }
-
- .hash-strip {
-     margin-top: 16px;
-     background: var(--hcdc-navy-deep);
-     border-radius: 8px;
-     padding: 12px 14px;
-     overflow: hidden;
-     position: relative;
- }
-
- .hash-strip .hash-inner {
-     font-family: var(--font-mono);
-     font-size: 11.5px;
-     color: var(--hcdc-gold-light);
-     white-space: nowrap;
-     display: inline-block;
-     animation: scrollhash 9s linear infinite;
- }
-
- @keyframes scrollhash {
-     0% {
-         transform: translateX(0);
-     }
-
-     100% {
-         transform: translateX(-50%);
-     }
- }
-
- .verified-pill {
+ .verify-pill {
      position: absolute;
      top: -12px;
      right: 24px;
@@ -386,6 +305,46 @@
      align-items: center;
      gap: 6px;
      box-shadow: 0 6px 14px rgba(166, 25, 46, 0.4);
+ }
+
+ .spotlight-media {
+     position: relative;
+     border-radius: 10px;
+     overflow: hidden;
+     aspect-ratio: 16/9;
+     background: var(--parchment-dim);
+     margin-bottom: 18px;
+ }
+
+ .spotlight-media iframe {
+     width: 100%;
+     height: 100%;
+     display: block;
+     border: none;
+ }
+
+
+ .spotlight-body .label {
+     font-family: var(--font-mono);
+     font-size: 11px;
+     letter-spacing: .08em;
+     text-transform: uppercase;
+     color: var(--ink-soft);
+     margin-bottom: 6px;
+ }
+
+ .spotlight-title {
+     font-family: var(--font-display);
+     font-size: 20px;
+     font-weight: 600;
+     margin: 0 0 6px;
+     color: var(--hcdc-navy);
+ }
+
+ .spotlight-sub {
+     font-size: 13px;
+     color: var(--ink-soft);
+     margin: 0;
  }
 
  /* Quick access strip */
