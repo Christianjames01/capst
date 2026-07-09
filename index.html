@@ -18,20 +18,12 @@
 
 <body>
 
-    <div class="utility-bar">
-        <div class="wrap">
-            <div class="utility-links">
-                <a href="#">Online Application System (OAS)</a>
-                <a href="#">Student Portal</a>
-                <a href="#">CertiChain Verifier</a>
-                <a href="#">HCDC Help Desk</a>
-            </div>
-            <div class="utility-social">
-                <a href="#" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
-                <a href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
-                <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
-            </div>
-        </div>
+    <div class="utility-social">
+        <a href="#" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+        <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+    </div>
+    </div>
     </div>
 
     <header class="main">
@@ -71,7 +63,7 @@
                     <a href="#verify" class="btn btn-ghost"><i class="ti ti-shield-check"></i>Verify a document</a>
                 </div>
                 <div class="hero-quicklinks">
-                    <a href="#">Graduation application</a>
+                    <a href="graduation-application.html">Graduation application</a>
                     <a href="#">Transcript request</a>
                     <a href="#">Diploma request</a>
                     <a href="#">Online clearance</a>
@@ -80,31 +72,31 @@
             <div class="seal-card">
                 <div class="verify-pill"><i class="ti ti-camera"></i>Registrar spotlight</div>
                 <div class="spotlight-media">
-                    <iframe src="https://www.youtube.com/embed/_rS2uEvG0ik" title="Registrar spotlight video"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen loading="lazy">
-                    </iframe>
+                    <div id="spotlight-player"></div>
+                    <div class="next-up-overlay" id="next-up-overlay">
+                        <div class="next-up-card">
+                            <div class="next-up-label">Up next</div>
+                            <div class="next-up-title" id="next-up-title"></div>
+                            <div class="next-up-actions">
+                                <button type="button" class="next-up-cancel" id="next-up-cancel">Cancel</button>
+                                <button type="button" class="next-up-play" id="next-up-play">Play now (<span
+                                        id="next-up-countdown">5</span>)</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="spotlight-body">
                     <div class="label">What's happening at the registrar</div>
-                    <p class="spotlight-title">How to request your Transcript of Records</p>
-                    <p class="spotlight-sub">A quick walkthrough of the counter, the queue, and what to bring for your
-                        request &mdash; posted by the registrar's office.</p>
+                    <p class="spotlight-title" id="spotlight-title">How to request your Transcript of Records</p>
+                    <p class="spotlight-sub" id="spotlight-sub">A quick walkthrough of the counter, the queue, and what
+                        to
+                        bring for your request &mdash; posted by the registrar's office.</p>
                 </div>
+                <div class="spotlight-dots" id="spotlight-dots"></div>
             </div>
         </div>
     </section>
 
-    <div class="quickstrip">
-        <div class="wrap">
-            <a href="#"><i class="ti ti-school"></i>Graduation application</a>
-            <a href="#"><i class="ti ti-file-text"></i>Transcript request</a>
-            <a href="#"><i class="ti ti-award"></i>Diploma request</a>
-            <a href="#"><i class="ti ti-checkbox"></i>Online clearance</a>
-            <a href="#"><i class="ti ti-message-chatbot"></i>Ask the AI assistant</a>
-        </div>
-    </div>
 
     <section id="services">
         <div class="wrap">
@@ -127,7 +119,7 @@
                     </div>
                     <h3>Graduation application</h3>
                     <p>Apply online and track eligibility against your curriculum in real time.</p>
-                    <a href="#" class="go">Apply now →</a>
+                    <a href="graduation-application.html" class="go">Apply now →</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
@@ -279,13 +271,12 @@
                     <div class="school">Holy Cross of Davao College</div>
                     <p>An Archdiocesan Catholic institution in Davao City, serving students since 1951. The Office of
                         Registration and Records Management is proud to bring secure, AI- and blockchain-enabled service
-                        to every
-                        graduate.</p>
+                        to every student.</p>
                 </div>
                 <div>
                     <h4>Registrar services</h4>
                     <ul>
-                        <li><a href="#">Graduation application</a></li>
+                        <a href="graduation-application.html">Graduation application</a>
                         <li><a href="#">Transcript request</a></li>
                         <li><a href="#">Diploma request</a></li>
                         <li><a href="#">Online clearance</a></li>
@@ -322,5 +313,175 @@
     </footer>
 
 </body>
+<script>
+    const spotlightPlaylist = [
+        {
+            videoId: "_rS2uEvG0ik",
+            title: "How to request your Transcript of Records",
+            sub: "A quick walkthrough of the counter, the queue, and what to bring for your request."
+        },
+        {
+            videoId: "YA9IOYDH0xY",
+            title: "Applying for graduation online",
+            sub: "Step-by-step guide to submitting your graduation application through the portal."
+        },
+        {
+            videoId: "fgYtNPEtpm4",
+            title: "Requesting a diploma or replacement copy",
+            sub: "What to prepare and how QR-verifiable diplomas are issued."
+        },
+        {
+            videoId: "QnlHfEGHNMA",
+            title: "Certificate of enrollment & good moral",
+            sub: "How to request common registrar certifications online."
+        },
+        {
+            videoId: "D0uOGq7fMn0",
+            title: "Completing your online clearance",
+            sub: "Routing clearance across departments and settling balances online."
+        }
+    ];
+
+    let spotlightIndex = 0;
+    let spotlightPlayer;
+
+    function loadYouTubeAPI() {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.body.appendChild(tag);
+    }
+
+    function renderDots() {
+        const dotsEl = document.getElementById("spotlight-dots");
+        dotsEl.innerHTML = "";
+        spotlightPlaylist.forEach((item, i) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "spotlight-dot" + (i === spotlightIndex ? " active" : "");
+            dot.textContent = i + 1; // visible number: 1, 2, 3...
+            dot.setAttribute("title", item.title); // native tooltip on hover
+            dot.setAttribute("aria-label", item.title);
+
+            // floating label that appears above the button on hover
+            const tip = document.createElement("span");
+            tip.className = "spotlight-dot-tip";
+            tip.textContent = item.title;
+            dot.appendChild(tip);
+
+            dot.addEventListener("click", () => playSpotlight(i));
+            dotsEl.appendChild(dot);
+        });
+    }
+
+    function updateSpotlightText() {
+        const item = spotlightPlaylist[spotlightIndex];
+        document.getElementById("spotlight-title").textContent = item.title;
+        document.getElementById("spotlight-sub").textContent = item.sub;
+        renderDots();
+    }
+
+    function getNextIndex() {
+        return (spotlightIndex + 1) % spotlightPlaylist.length;
+    }
+
+    let progressWatcher = null;
+    let nextUpShown = false;
+    let nextUpCancelled = false;
+    let countdownValue = 5;
+    const COUNTDOWN_START = 5;
+
+    function showNextUpOverlay() {
+        if (nextUpCancelled) return;
+        nextUpShown = true;
+        countdownValue = COUNTDOWN_START;
+        const nextItem = spotlightPlaylist[getNextIndex()];
+        document.getElementById("next-up-title").textContent = nextItem.title;
+        document.getElementById("next-up-countdown").textContent = countdownValue;
+        document.getElementById("next-up-overlay").classList.add("visible");
+    }
+
+    function hideNextUpOverlay() {
+        document.getElementById("next-up-overlay").classList.remove("visible");
+    }
+
+    function resetNextUpState() {
+        nextUpShown = false;
+        nextUpCancelled = false;
+        hideNextUpOverlay();
+    }
+
+    function startProgressWatcher() {
+        stopProgressWatcher();
+        progressWatcher = setInterval(() => {
+            if (!spotlightPlayer || !spotlightPlayer.getCurrentTime) return;
+            const duration = spotlightPlayer.getDuration();
+            const current = spotlightPlayer.getCurrentTime();
+            if (!duration) return;
+            const remaining = duration - current;
+
+            if (remaining <= COUNTDOWN_START && remaining > 0 && !nextUpShown && !nextUpCancelled) {
+                showNextUpOverlay();
+            }
+            if (nextUpShown && !nextUpCancelled) {
+                const newCount = Math.max(0, Math.ceil(remaining));
+                if (newCount !== countdownValue) {
+                    countdownValue = newCount;
+                    document.getElementById("next-up-countdown").textContent = countdownValue;
+                }
+            }
+        }, 500);
+    }
+
+    function stopProgressWatcher() {
+        if (progressWatcher) {
+            clearInterval(progressWatcher);
+            progressWatcher = null;
+        }
+    }
+
+    function playSpotlight(index) {
+        spotlightIndex = index;
+        resetNextUpState();
+        updateSpotlightText();
+        if (spotlightPlayer && spotlightPlayer.loadVideoById) {
+            spotlightPlayer.loadVideoById(spotlightPlaylist[spotlightIndex].videoId);
+        }
+    }
+
+    function onYouTubeIframeAPIReady() {
+        spotlightPlayer = new YT.Player("spotlight-player", {
+            videoId: spotlightPlaylist[spotlightIndex].videoId,
+            playerVars: { rel: 0 },
+            events: {
+                onStateChange: function (event) {
+                    if (event.data === YT.PlayerState.PLAYING) {
+                        startProgressWatcher();
+                    }
+                    if (event.data === YT.PlayerState.PAUSED) {
+                        stopProgressWatcher();
+                    }
+                    if (event.data === YT.PlayerState.ENDED) {
+                        stopProgressWatcher();
+                        playSpotlight(getNextIndex());
+                    }
+                }
+            }
+        });
+    }
+
+    document.getElementById("next-up-cancel").addEventListener("click", () => {
+        nextUpCancelled = true;
+        hideNextUpOverlay();
+    });
+
+    document.getElementById("next-up-play").addEventListener("click", () => {
+        stopProgressWatcher();
+        playSpotlight(getNextIndex());
+    });
+
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    renderDots();
+    loadYouTubeAPI();
+</script>
 
 </html>
